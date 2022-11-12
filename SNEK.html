@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<style type="text/css">
+
+		h1{
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+		}
+		p{
+			text-align: center;
+		}
+
+		canvas{
+			border-radius: 10px;
+		}
+
+	</style>
+	<title>Snake</title>
+</head>
+<body bgcolor="lightblue">
+<!-Code By: Gean Souza-!>
+
+	<h1 align="center">
+		SnEk!<br>
+		<table align="center">
+				<tr>
+					<td>Pontuação:</td>
+					<td><div id="pts"></div></td>
+				</tr>
+		</table>
+		
+	</h1>
+	
+
+
+	<p align="center">
+	<canvas id="stage" width="400" height="400"  style="border: solid #0f380f 2px;"></canvas>
+	<script type="text/javascript">
+
+			window.onload = function(){
+			var stage = document.getElementById('stage');
+			var ctx = stage.getContext("2d");
+			document.addEventListener("keydown", keyPush);
+
+			setInterval(game, 80);
+
+			const vel = 1;
+			var pts = 0;
+			var vx = vy = 0;
+			var px = 9;
+			var py = 9;
+			var tp = 20;
+			var qp = 20;
+			var ax = ay = 16;
+			var trail = [];
+			tail = 5;
+			pts = 0;
+
+			function game(){
+				px += vx;
+				py += vy;
+
+				if (px < 0) {
+					px = qp - 1;
+				}
+				if (px > qp - 1) {
+					px = 0;
+				}
+				if (py < 0) {
+					py = qp -1;
+				}
+				if (py > qp -1) {
+					py = 0;
+				}
+
+
+				ctx.fillStyle = "#8bac0f";
+				ctx.fillRect(0,0, stage.width, stage.height);
+				ctx.fillStyle = "#306230";
+				ctx.fillRect(ax*tp, ay*tp, tp,tp);
+				ctx.fillStyle = "#0f380f";
+
+				for(var i = 0; i < trail.length; i++){
+					ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp-1,tp-1);
+					if (trail[i].x == px && trail[i].y == py) {
+							vx = vy = 0;
+							tail = 5;
+					}	
+				}
+
+				trail.push({x:px,y:py})
+
+				while (trail.length > tail) {
+					trail.shift();
+				}
+
+				if (ax==px && ay==py) {
+					pts++;
+					document.getElementById("pts").innerHTML = pts;
+					//console.log(pts);
+					tail++;
+					ax = Math.floor(Math.random()*qp);
+					ay = Math.floor(Math.random()*qp);
+				}
+
+			}
+
+
+            function keyPush(event){
+ 
+                switch (event.keyCode) {
+                    case 37: // Left
+                        vx = -vel;
+                        vy = 0;
+                        break;
+                    case 38: // up
+                        vx = 0;
+                        vy = -vel;
+                        break;
+                    case 39: // right
+                        vx = vel;
+                        vy = 0;
+                        break;
+                    case 40: // down
+                        vx = 0;
+                        vy = vel;
+                        break;          
+                    default:
+                        
+                        break;
+                }
+
+			}
+			
+
+		}
+
+	</script>	
+	</p>
+	<p>	by: Gean Souza</p>
+</body>
+</html>
